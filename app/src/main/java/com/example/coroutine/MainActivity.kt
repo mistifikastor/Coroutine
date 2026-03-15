@@ -2,6 +2,7 @@ package com.example.coroutine
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.SeekBar
 import com.example.coroutine.databinding.MainBinding
 import kotlinx.coroutines.*
@@ -17,6 +18,16 @@ class MainActivity : AppCompatActivity() {
             delay(5000)
             return@async "Finished Coroutine $taskNumber"
         }
+
+    fun launchCoroutines(view: View) {
+        for (i in 1..count) {
+            binding.statusText.text = "Started Coroutine $i"
+            coroutineScope.launch(Dispatchers.Main) {
+                binding.statusText.text = performTask(i).await()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainBinding.inflate(layoutInflater)
